@@ -1,0 +1,38 @@
+/* Base : variables, reset, mise en page, en-tête, pied de page, boutons */
+:root{--v:#0F7A3E;--vd:#0A4D28;--j:#FFC72C;--bg:#F5F9F3;--t:#14231A;--g:#5E7064;--l:#D9E5DC;--o:#E8890C;--r:#C8382F;color-scheme:light;box-sizing:border-box}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:var(--t);line-height:1.55;padding-bottom:env(safe-area-inset-bottom,0)}
+button,select{font:inherit}
+button{cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--j);outline-offset:2px}
+.w{max-width:960px;margin:auto;padding:0 20px}
+a{color:inherit}
+header{position:sticky;top:0;z-index:10;background:var(--vd);color:#fff;padding-top:env(safe-area-inset-top,0)}
+header .w{display:flex;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px}
+.logo{font-weight:800;font-size:1.25rem;text-decoration:none}
+.logo span{color:var(--j)}
+header a.n{font-size:.9rem;font-weight:600;color:#D5EBDC;text-decoration:none}
+.nav-menu{display:flex;gap:16px;align-items:center}
+.mobile-menu-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:8px}
+h2.t{font-size:1.35rem;font-weight:700;margin:26px 0 4px}
+.sub{color:var(--g);font-size:.92rem}
+.btn{display:inline-block;background:var(--v);color:#fff;font-weight:600;padding:11px 20px;border-radius:10px;text-decoration:none;text-align:center}
+.btn:hover{background:var(--vd)}
+.btn.wa{background:#1FA855}
+.empty{margin:40px 0;text-align:center;color:var(--g)}
+.back{display:inline-block;margin:20px 0 4px;font-weight:600;color:var(--v);text-decoration:none}
+footer{background:var(--vd);color:#B7D8C2;margin-top:60px;padding:30px 0 22px;font-size:.9rem}
+footer .w{display:grid;gap:6px}
+footer b{color:#fff}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+body{overflow-x:clip}
+.btn.o{background:#fff;color:var(--v);border:1.5px solid var(--v)}
+.btn.o:hover{background:var(--v);color:#fff}
+@media(max-width:768px){
+  .mobile-menu-btn{display:block}
+  .nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--vd);flex-direction:column;padding:16px;gap:12px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+  .nav-menu.active{display:flex}
+  .nav-menu a.n{padding:8px 0}
+  .btn-mobile{display:inline-block !important;padding:8px 16px;border-radius:8px;text-align:center}
+}

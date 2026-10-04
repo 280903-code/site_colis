@@ -1,0 +1,102 @@
+/* Auth pages styling - reuses base variables */
+.auth-container {
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.auth-card {
+  background: #fff;
+  border: 1px solid var(--l);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(10, 77, 40, 0.12);
+}
+
+.auth-card h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--v);
+  margin-bottom: 8px;
+}
+
+.auth-card p {
+  color: var(--g);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--g);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--l);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  outline: 3px solid var(--j);
+  outline-offset: 2px;
+  border-color: var(--v);
+}
+
+.auth-form .error {
+  color: var(--r);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.auth-form button {
+  margin-top: 8px;
+}
+
+.auth-links {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.auth-links a {
+  color: var(--v);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+[data-theme="dark"] .auth-card {
+  background: #1A3320;
+  border-color: var(--l);
+}
+
+[data-theme="dark"] .auth-card h1 {
+  color: var(--t);
+}
+
+[data-theme="dark"] .auth-form input,
+[data-theme="dark"] .auth-form select,
+[data-theme="dark"] .auth-form textarea {
+  background: #0D1F12;
+  border-color: var(--l);
+  color: var(--t);
+}

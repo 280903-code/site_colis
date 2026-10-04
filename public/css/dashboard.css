@@ -1,0 +1,259 @@
+/* Dashboard styling - reuses base variables */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--v);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--l);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--v);
+  line-height: 1;
+}
+
+.stat-card .label {
+  font-size: 0.85rem;
+  color: var(--g);
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.table-container {
+  background: #fff;
+  border: 1px solid var(--l);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--l);
+}
+
+.table-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--t);
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.filters select {
+  padding: 8px 12px;
+  border: 1.5px solid var(--l);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--l);
+}
+
+.data-table th {
+  background: var(--bg);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--g);
+}
+
+.data-table tr:hover {
+  background: var(--bg);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #FFF3CD;
+  color: #856404;
+}
+
+.status-approved {
+  background: #D4EDDA;
+  color: #155724;
+}
+
+.status-rejected {
+  background: #F8D7DA;
+  color: #721C24;
+}
+
+.status-suspended {
+  background: #E2E3E5;
+  color: #383D41;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions .btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+}
+
+.pagination a,
+.pagination span {
+  padding: 8px 12px;
+  border: 1px solid var(--l);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--t);
+}
+
+.pagination a:hover {
+  background: var(--bg);
+}
+
+.pagination .active {
+  background: var(--v);
+  color: #fff;
+  border-color: var(--v);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--v);
+  margin-bottom: 16px;
+}
+
+.modal-form {
+  display: grid;
+  gap: 16px;
+}
+
+.modal-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--g);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--l);
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .table-container,
+[data-theme="dark"] .modal {
+  background: #1A3320;
+  border-color: var(--l);
+}
+
+[data-theme="dark"] .dashboard-header h1,
+[data-theme="dark"] .table-header h2 {
+  color: var(--t);
+}
+
+[data-theme="dark"] .data-table th {
+  background: #0D1F12;
+}
+
+[data-theme="dark"] .data-table tr:hover {
+  background: #0D1F12;
+}
+
+[data-theme="dark"] .modal-form input,
+[data-theme="dark"] .modal-form select,
+[data-theme="dark"] .modal-form textarea {
+  background: #0D1F12;
+  border-color: var(--l);
+  color: var(--t);
+}

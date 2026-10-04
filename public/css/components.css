@@ -1,0 +1,21 @@
+/* Composants réutilisés : boutons de trajets, étiquettes, logo agence, barre de kilos, date */
+.routes{display:flex;gap:8px;padding:18px 20px 4px;max-width:960px;margin:auto;overflow-x:auto;scrollbar-width:none}
+.routes::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;white-space:nowrap;padding:7px 14px;border-radius:99px;border:1.5px solid var(--v);color:var(--v);font-size:.88rem;font-weight:600;background:#fff;text-decoration:none}
+.chip.on{background:var(--v);color:#fff}
+.av{width:52px;height:52px;border-radius:12px;background:var(--j);display:grid;place-items:center;font-weight:800;font-size:1.1rem;flex-shrink:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:.78rem;font-weight:600;background:#E4F1E8;color:var(--vd);padding:3px 10px;border-radius:99px}
+.bar{height:10px;border-radius:99px;background:#E4EDE6;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--v)}
+.low .bar i{background:var(--o)}.full .bar i{background:var(--r)}
+.date{width:54px;flex-shrink:0;text-align:center;background:#E4F1E8;border-radius:10px;padding:6px 0}
+.date b{display:block;font-size:1.45rem;line-height:1;color:var(--vd)}
+.date span{font-size:.7rem;text-transform:uppercase;font-weight:700;color:var(--g)}
+.rt{font-weight:700;line-height:1.25}
+.kgl{font-size:.88rem;color:var(--g);margin-bottom:6px}
+.kgl strong{font-size:1.5rem;color:var(--t);font-weight:800}
+.pr{font-weight:700;color:var(--vd);font-size:.92rem}
+.routes{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.routes .chip{scroll-snap-align:start}
+.rt{overflow-wrap:anywhere}

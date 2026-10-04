@@ -1,0 +1,18 @@
+/* Liste des agences (accueil et page agences) */
+.aglist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:16px;margin-top:16px}
+.ag{background:#fff;border:1px solid var(--l);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:box-shadow .2s,transform .2s}
+.ag:hover{box-shadow:0 8px 22px rgba(10,77,40,.12);transform:translateY(-2px)}
+.ag-h{display:flex;gap:14px;align-items:center}
+.ag-t{min-width:0}
+.ag-t h3{font-size:1.1rem;font-weight:700;line-height:1.2}
+.ag-t p{font-size:.85rem;color:var(--g);margin-top:2px}
+.nx{background:#F1F7F2;border-radius:12px;padding:12px 14px;margin-top:auto}
+.nx-l{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--g);margin-bottom:8px}
+.nx-b{display:flex;gap:12px;align-items:center}
+.nx-i{flex:1;min-width:0}
+.nx .date{background:#fff}
+.nx-0 p{font-size:.88rem;color:var(--g)}
+.ag-f{display:grid;grid-template-columns:1fr auto;gap:10px}
+@media(prefers-reduced-motion:reduce){.ag{transition:none}.ag:hover{transform:none}}
+.ag-t h3,.ag-t p{overflow-wrap:anywhere}
+.more{text-align:center;margin-top:22px}

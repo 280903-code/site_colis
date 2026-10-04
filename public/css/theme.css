@@ -1,0 +1,62 @@
+/* Dark mode theme */
+[data-theme="dark"] {
+  --bg: #0D1F12;
+  --t: #E8F5E9;
+  --g: #A8C5A8;
+  --l: #1E3D24;
+  --vd: #083018;
+}
+
+[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--t);
+}
+
+[data-theme="dark"] .ag,
+[data-theme="dark"] .side,
+[data-theme="dark"] .fc,
+[data-theme="dark"] .search,
+[data-theme="dark"] .stats div,
+[data-theme="dark"] .date {
+  background: #1A3320;
+  border-color: var(--l);
+}
+
+[data-theme="dark"] .ag:hover {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .side .top {
+  background: var(--vd);
+}
+
+[data-theme="dark"] .side .top p {
+  color: var(--g);
+}
+
+[data-theme="dark"] .tag {
+  background: #1E3D24;
+  color: var(--g);
+}
+
+[data-theme="dark"] .bar {
+  background: #1E3D24;
+}
+
+[data-theme="dark"] .btn.o {
+  background: #1A3320;
+  color: var(--t);
+}
+
+[data-theme="dark"] .btn.o:hover {
+  background: var(--v);
+  color: #fff;
+}
+
+[data-theme="dark"] .date b {
+  color: var(--t);
+}
+
+[data-theme="dark"] .date span {
+  color: var(--g);
+}
