@@ -7,6 +7,41 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PartnerRegistrationRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $email = $this->input('email');
+
+        if (is_string($email)) {
+            $this->merge(['email' => mb_strtolower(trim($email))]);
+        }
+
+        $whatsapp = $this->input('whatsapp');
+
+        if (is_string($whatsapp)) {
+            $this->merge([
+                'whatsapp' => preg_replace('/[^0-9]/', '', $whatsapp),
+            ]);
+        }
+
+        $routes = $this->input('routes');
+
+        if (is_array($routes)) {
+            foreach ($routes as $index => $route) {
+                if (! is_string($route)) {
+                    continue;
+                }
+
+                $decodedRoute = json_decode($route, true);
+
+                if (is_array($decodedRoute)) {
+                    $routes[$index] = $decodedRoute;
+                }
+            }
+
+            $this->merge(['routes' => $routes]);
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -36,16 +71,6 @@ class PartnerRegistrationRequest extends FormRequest
             'routes.*.to' => 'required|in:SN,KM,FR|different:routes.*.from',
             'website' => 'nullable|max:255', // Honeypot field
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        // Clean WhatsApp - keep only digits
-        if ($this->has('whatsapp')) {
-            $this->merge([
-                'whatsapp' => preg_replace('/[^0-9]/', '', $this->whatsapp),
-            ]);
-        }
     }
 
     public function messages(): array

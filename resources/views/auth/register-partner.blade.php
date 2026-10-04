@@ -66,8 +66,15 @@
         <label>Trajets desservis</label>
         <div style="display: grid; gap: 8px;">
           @foreach([['SN', 'KM'], ['KM', 'SN'], ['SN', 'FR'], ['FR', 'SN'], ['FR', 'KM'], ['KM', 'FR']] as $route)
+            @php
+              $routeData = ['from' => $route[0], 'to' => $route[1]];
+              $oldRoutes = old('routes', []);
+              $isRouteSelected = collect($oldRoutes)->contains(fn ($oldRoute) => is_array($oldRoute)
+                ? $oldRoute === $routeData
+                : $oldRoute === json_encode($routeData));
+            @endphp
             <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
-              <input type="checkbox" name="routes[]" value="{{ json_encode(['from' => $route[0], 'to' => $route[1]]) }}" {{ old('routes') && in_array(json_encode(['from' => $route[0], 'to' => $route[1]]), old('routes')) ? 'checked' : '' }}>
+              <input type="checkbox" name="routes[]" value="{{ json_encode($routeData) }}" {{ $isRouteSelected ? 'checked' : '' }}>
               {{ $route[0] === 'SN' ? 'Sénégal' : ($route[0] === 'KM' ? 'Comores' : 'France') }} → {{ $route[1] === 'SN' ? 'Sénégal' : ($route[1] === 'KM' ? 'Comores' : 'France') }}
             </label>
           @endforeach

@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class AgencyDashboardController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'role:admin_agence']);
-    }
-
     private function getAgency()
     {
         return auth()->user()->agency;
@@ -228,6 +223,24 @@ class AgencyDashboardController extends Controller
 
         if (!$agency) {
             return back()->with('error', 'Agence non trouvée.');
+        }
+
+        $routes = $request->input('routes');
+
+        if (is_array($routes)) {
+            foreach ($routes as $index => $route) {
+                if (! is_string($route)) {
+                    continue;
+                }
+
+                $decodedRoute = json_decode($route, true);
+
+                if (is_array($decodedRoute)) {
+                    $routes[$index] = $decodedRoute;
+                }
+            }
+
+            $request->merge(['routes' => $routes]);
         }
 
         $request->validate([

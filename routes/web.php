@@ -1,12 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicController;
-use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AgencyDashboardController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PublicController;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/dashboard', function (Request $request): RedirectResponse {
+    return $request->user()->isAdmin()
+        ? redirect()->route('admin.dashboard')
+        : redirect()->route('agency.dashboard');
+})->middleware('auth')->name('dashboard');
+
 Route::get('/agences', [PublicController::class, 'agences'])->name('agences');
 Route::get('/agences/{slug}', [PublicController::class, 'agence'])->name('agence.show');
 

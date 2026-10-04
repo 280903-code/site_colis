@@ -54,4 +54,23 @@ class AgencyAccessTest extends TestCase
         $this->assertTrue($publicAgencies->contains($approvedAgency));
         $this->assertFalse($publicAgencies->contains($pendingAgency));
     }
+
+    public function test_agency_can_update_routes_from_the_route_checkboxes(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+        $agency = Agency::factory()->for($agencyUser, 'user')->create();
+
+        $response = $this->actingAs($agencyUser)->post(route('agency.routes.update'), [
+            'routes' => [
+                json_encode(['from' => 'SN', 'to' => 'FR']),
+            ],
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('agency_routes', [
+            'agency_id' => $agency->id,
+            'from_country' => 'SN',
+            'to_country' => 'FR',
+        ]);
+    }
 }
