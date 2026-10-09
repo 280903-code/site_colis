@@ -11,8 +11,8 @@
 @section('content')
   <section class="hero">
     <div class="w">
-      <h1>Envoyez vos colis entre le Sénégal, les Comores et la France.</h1>
-      <p>Comparez les agences, voyez les vols disponibles et les kilos restants, puis réservez par WhatsApp.</p>
+      <h1>Bienvenue sur Konexa.</h1>
+      <p>Comparez les agences de colis, voyez les vols disponibles et les kilos restants, puis réservez par WhatsApp.</p>
     </div>
   </section>
 

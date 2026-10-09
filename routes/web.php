@@ -14,9 +14,11 @@ Route::get('/dashboard', function (Request $request): RedirectResponse {
         ? redirect()->route('admin.dashboard')
         : redirect()->route('agency.dashboard');
 })->middleware('auth')->name('dashboard');
-
+Route::get('/accueil', [PublicController::class, 'home'])->name('Accueil');
 Route::get('/agences', [PublicController::class, 'agences'])->name('agences');
 Route::get('/agences/{slug}', [PublicController::class, 'agence'])->name('agence.show');
+Route::view('/a-propos', 'about')->name('about');
+Route::view('/contact', 'contact')->name('contact');
 
 Route::get('/devenir-partenaire', [PartnerController::class, 'showRegistrationForm'])->name('partner.register.form');
 Route::post('/devenir-partenaire', [PartnerController::class, 'register'])->name('partner.register');

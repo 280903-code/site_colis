@@ -73,4 +73,18 @@ class AgencyAccessTest extends TestCase
             'to_country' => 'FR',
         ]);
     }
+
+    public function test_agency_flight_form_renders_all_fields_with_its_styling_hooks(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+        Agency::factory()->for($agencyUser, 'user')->create();
+
+        $this->actingAs($agencyUser)
+            ->get(route('agency.flights.create'))
+            ->assertOk()
+            ->assertSee('class="auth-form flight-form"', false)
+            ->assertSee('Pays de départ')
+            ->assertSee('Prix par kg')
+            ->assertSee('Kilos restants');
+    }
 }

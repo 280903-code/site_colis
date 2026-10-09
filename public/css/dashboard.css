@@ -230,30 +230,80 @@
   margin-top: 8px;
 }
 
-[data-theme="dark"] .stat-card,
-[data-theme="dark"] .table-container,
-[data-theme="dark"] .modal {
-  background: #1A3320;
-  border-color: var(--l);
+.flight-form-card {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 30px;
 }
 
-[data-theme="dark"] .dashboard-header h1,
-[data-theme="dark"] .table-header h2 {
+.flight-form-intro {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 24px;
+}
+
+.flight-form-intro h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.flight-form-intro p,
+.flight-form-hint {
+  color: var(--g);
+  font-size: .88rem;
+}
+
+.flight-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.flight-form > div {
+  min-width: 0;
+}
+
+.flight-form input,
+.flight-form select {
+  min-height: 48px;
+  background: #fff;
   color: var(--t);
 }
 
-[data-theme="dark"] .data-table th {
-  background: #0D1F12;
+.flight-form select {
+  cursor: pointer;
 }
 
-[data-theme="dark"] .data-table tr:hover {
-  background: #0D1F12;
+.flight-form .flight-form-hint {
+  grid-column: 1 / -1;
+  background: #F1F7F2;
+  border-radius: 10px;
+  padding: 12px 14px;
 }
 
-[data-theme="dark"] .modal-form input,
-[data-theme="dark"] .modal-form select,
-[data-theme="dark"] .modal-form textarea {
-  background: #0D1F12;
-  border-color: var(--l);
-  color: var(--t);
+.flight-form button[type="submit"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 0;
+}
+
+@media(max-width:600px) {
+  .flight-form-card {
+    padding: 22px 18px;
+  }
+
+  .flight-form {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .flight-form .flight-form-hint,
+  .flight-form button[type="submit"] {
+    grid-column: auto;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
 }
