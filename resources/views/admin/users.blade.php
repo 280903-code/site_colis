@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des utilisateurs | AB-Flash')
+@section('title', 'Gestion des utilisateurs | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -22,6 +22,7 @@
         </form>
       </div>
     </div>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Liste des utilisateurs">
     <table class="data-table">
       <thead>
         <tr>
@@ -48,6 +49,7 @@
         @endforeach
       </tbody>
     </table>
+    </div>
     {{ $users->links() }}
   </div>
 </div>

@@ -1,4 +1,4 @@
-# AB-Flash
+# KONEXA
 
 Annuaire des agences de colis entre le Sénégal, les Comores et la France.
 
@@ -51,7 +51,7 @@ DB_PASSWORD=your_password
 5. **Configurer le compte admin**
 ```env
 ADMIN_NAME="Admin"
-ADMIN_EMAIL="admin@abflash.local"
+ADMIN_EMAIL="admin@konexa.local"
 ADMIN_PASSWORD="your_secure_password"
 ```
 
@@ -70,7 +70,7 @@ L'application sera accessible sur http://127.0.0.1:8000
 ## Comptes de test
 
 ### Admin
-- **Email** : admin@abflash.local
+- **Email** : admin@konexa.local
 - **Mot de passe** : changeme123 (à modifier dans .env)
 - **Accès** : http://127.0.0.1:8000/admin
 
@@ -229,7 +229,7 @@ php artisan view:cache
 ## Design
 
 Le design est **identique pixel par pixel** au site statique original :
-- Couleurs : vert #0F7A3E, jaune #FFC72C
+- Couleurs : vert #0F7A3E, vert foncé #0A4D28, jaune #FFC72C
 - Police : Poppins (Google Fonts)
 - Responsive mobile
 - Animations CSS

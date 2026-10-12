@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($flight) ? 'Modifier vol | AB-Flash' : 'Nouveau vol | AB-Flash')
+@section('title', isset($flight) ? 'Modifier vol | KONEXA' : 'Nouveau vol | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">

@@ -1,5 +1,6 @@
 [data-theme="dark"] {
   --bg:#090b0e;
+  --surface:#12151a;
   --t:#f3f4f6;
   --g:#a1a1aa;
   --l:#292d34;
@@ -41,6 +42,7 @@
 [data-theme="dark"] .modal-form input,
 [data-theme="dark"] .modal-form select,
 [data-theme="dark"] .modal-form textarea,
+[data-theme="dark"] .filters input,
 [data-theme="dark"] .filters select{background:#0c0e12;border-color:var(--l);color:var(--t)}
 [data-theme="dark"] .auth-form select option,
 [data-theme="dark"] .modal-form select option{background:#12151a;color:var(--t)}
@@ -52,7 +54,17 @@
 [data-theme="dark"] .pagination a:hover{background:#20242a}
 [data-theme="dark"] .pagination .active{background:var(--v);color:#fff;border-color:var(--v)}
 [data-theme="dark"] .nx .date{background:#1a1d23}
-[data-theme="dark"] .chip{background:#12151a;color:#d1d5db}
+[data-theme="dark"] .chip{background:#212121;color:#d1d5db}
 [data-theme="dark"] .chip.on{background:var(--v);color:#fff}
 [data-theme="dark"] .footer-bottom{border-color:rgba(255,255,255,.12)}
 [data-theme="dark"] .flight-form-hint{background:#1a1d23}
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .contact-card{background:var(--surface);border-color:var(--l)}
+[data-theme="dark"] .info-notice{background:#171a20}
+[data-theme="dark"] .contact-card-icon{background:#20242a;color:#8ee0af}
+[data-theme="dark"] .status-pending{background:#4a3822;color:#f1c987}
+[data-theme="dark"] .status-approved{background:#1e4138;color:#9be2c5}
+[data-theme="dark"] .status-rejected{background:#4a292d;color:#ffadac}
+[data-theme="dark"] .status-suspended{background:#30393c;color:#d2dcda}
+[data-theme="dark"] .admin-feedback--success{background:#173d27;border-color:#285b38;color:#a6e0b3}
+[data-theme="dark"] .admin-feedback--error{background:#3b1618;border-color:#633034;color:#ffb4b4}

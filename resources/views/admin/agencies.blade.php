@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des agences | AB-Flash')
+@section('title', 'Gestion des agences | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -11,6 +11,8 @@
   <div class="dashboard-header">
     <h1>Gestion des agences</h1>
   </div>
+
+  @include('admin.partials.feedback')
 
   <div class="table-container">
     <div class="table-header">
@@ -29,6 +31,7 @@
         </form>
       </div>
     </div>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Liste des agences">
     <table class="data-table">
       <thead>
         <tr>
@@ -60,7 +63,7 @@
                   @csrf
                   <button type="submit" class="btn btn-sm">Approuver</button>
                 </form>
-                <button onclick="showRejectModal({{ $agency->id }}, '{{ $agency->name }}')" class="btn o btn-sm">Rejeter</button>
+                <button type="button" data-reject-agency="{{ $agency->id }}" data-reject-url="{{ route('admin.agencies.reject', $agency) }}" class="btn o btn-sm">Rejeter</button>
               @elseif($agency->status === 'approved')
                 <form method="POST" action="{{ route('admin.agencies.suspend', $agency) }}" style="display: inline;">
                   @csrf
@@ -77,18 +80,20 @@
                 @method('DELETE')
                 <button type="submit" class="btn o btn-sm" style="color: var(--r); border-color: var(--r);">Supprimer</button>
               </form>
+              <a href="{{ route('admin.agencies.edit', $agency) }}" class="btn o btn-sm">Modifier</a>
             </div>
           </td>
         </tr>
         @endforeach
       </tbody>
     </table>
+    </div>
     {{ $agencies->links() }}
   </div>
 </div>
 
 <!-- Reject Modal -->
-<div id="rejectModal" class="modal-overlay" style="display: none;">
+<div id="rejectModal" class="modal-overlay" hidden>
   <div class="modal">
     <h2>Rejeter l'agence</h2>
     <form method="POST" action="" id="rejectForm">
@@ -99,7 +104,7 @@
         <textarea id="reason" name="reason" rows="4" required></textarea>
       </div>
       <div class="modal-actions">
-        <button type="button" onclick="hideRejectModal()" class="btn o">Annuler</button>
+        <button type="button" data-close-reject-modal class="btn o">Annuler</button>
         <button type="submit" class="btn">Rejeter</button>
       </div>
     </form>
@@ -108,15 +113,23 @@
 
 @push('scripts')
 <script>
-function showRejectModal(id, name) {
-  document.getElementById('rejectAgencyId').value = id;
-  document.getElementById('rejectForm').action = '{{ route('admin.agencies.reject', ':id') }}'.replace(':id', id);
-  document.getElementById('rejectModal').style.display = 'flex';
-}
+const rejectModal = document.getElementById('rejectModal');
+const rejectForm = document.getElementById('rejectForm');
 
-function hideRejectModal() {
-  document.getElementById('rejectModal').style.display = 'none';
-}
+document.querySelectorAll('[data-reject-agency]').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.getElementById('rejectAgencyId').value = button.dataset.rejectAgency;
+    rejectForm.action = button.dataset.rejectUrl;
+    rejectModal.hidden = false;
+    document.getElementById('reason').focus();
+  });
+});
+
+document.querySelectorAll('[data-close-reject-modal]').forEach((button) => {
+  button.addEventListener('click', () => {
+    rejectModal.hidden = true;
+  });
+});
 </script>
 @endpush
 @endsection

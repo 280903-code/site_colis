@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mes trajets | AB-Flash')
+@section('title', 'Mes trajets | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">

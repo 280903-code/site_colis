@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $agency->name . ' | AB-Flash')
+@section('title', $agency->name . ' | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/components.css') }}">

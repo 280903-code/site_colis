@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'À propos | AB-Flash')
+@section('title', 'À propos | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/info-pages.css') }}">
@@ -10,9 +10,9 @@
 <main class="info-page">
   <section class="info-hero">
     <div class="w">
-      <span class="info-eyebrow">À propos d'AB-Flash</span>
+      <span class="info-eyebrow">À propos de KONEXA</span>
       <h1>Les envois de colis, plus simples et plus clairs.</h1>
-      <p>AB-Flash aide chacun à trouver une agence et un vol adaptés pour envoyer des colis entre le Sénégal, les Comores et la France.</p>
+      <p>KONEXA aide chacun à trouver une agence et un vol adaptés pour envoyer des colis entre le Sénégal, les Comores et la France.</p>
       <a href="{{ route('agences') }}" class="btn">Trouver une agence</a>
     </div>
   </section>

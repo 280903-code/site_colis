@@ -4,6 +4,7 @@
   --vd: #0A4D28;
   --j: #FFC72C;
   --bg: #F5F9F3;
+  --surface: #FFFFFF;
   --t: #14231A;
   --g: #5E7064;
   --l: #D9E5DC;
@@ -191,9 +192,8 @@ h2.t {
 }
 
 footer {
-  background: var(--vd);
+  background: #12151a;
   color: #B7D8C2;
-  margin-top: 60px;
   padding: 48px 0 20px;
   font-size: .9rem
 }
@@ -215,7 +215,7 @@ footer {
 
 .footer-brand p {
   margin-top: 14px;
-  color: #B7D8C2;
+  color: #949191;
   line-height: 1.8
 }
 
@@ -235,7 +235,7 @@ footer {
 }
 
 .footer-column a {
-  color: #B7D8C2;
+  color: #949191;
   text-decoration: none;
   overflow-wrap: anywhere
 }
@@ -308,7 +308,7 @@ body {
 }
 
 .btn.o {
-  background: #fff;
+  background: var(--surface);
   color: var(--v);
   border: 1.5px solid var(--v)
 }

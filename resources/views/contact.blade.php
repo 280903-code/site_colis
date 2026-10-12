@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact | AB-Flash')
+@section('title', 'Contact | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/info-pages.css') }}">

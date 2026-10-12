@@ -6,8 +6,10 @@ use App\Models\ActivityLog;
 use App\Models\Agency;
 use App\Models\Flight;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class AdminDashboardController extends Controller
 {
@@ -60,6 +62,34 @@ class AdminDashboardController extends Controller
         $agencies = $query->latest()->paginate(15);
 
         return view('admin.agencies', compact('agencies', 'status', 'search'));
+    }
+
+    public function editAgency(Agency $agency): View
+    {
+        return view('admin.agency-form', compact('agency'));
+    }
+
+    public function updateAgency(Request $request, Agency $agency): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:1000'],
+            'address' => ['required', 'string', 'max:500'],
+            'opening_hours' => ['required', 'string', 'max:255'],
+            'whatsapp' => ['required', 'string', 'regex:/^[0-9]+$/', 'min:10', 'max:15'],
+        ]);
+
+        $agency->update($validated);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'update_agency',
+            'subject_type' => Agency::class,
+            'subject_id' => $agency->id,
+            'description' => "Modifié l'agence {$agency->name}",
+        ]);
+
+        return redirect()->route('admin.agencies')->with('success', 'Agence modifiée avec succès.');
     }
 
     public function approveAgency(Agency $agency)

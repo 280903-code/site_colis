@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Trouver une agence | AB-Flash')
+@section('title', 'Trouver une agence | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/hero.css') }}">

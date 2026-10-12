@@ -10,7 +10,7 @@ class PublicInformationPagesTest extends TestCase
     {
         $this->get(route('about'))
             ->assertOk()
-            ->assertSee('AB-Flash aide chacun')
+            ->assertSee('KONEXA aide chacun')
             ->assertSee('Toutes les agences')
             ->assertSee(route('contact'));
     }

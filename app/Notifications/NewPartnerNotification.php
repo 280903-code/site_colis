@@ -35,15 +35,15 @@ class NewPartnerNotification extends Notification implements ShouldQueue
         $agency = $this->agency->fresh('user');
 
         return (new MailMessage)
-            ->subject('Nouvelle demande de partenaire - AB-Flash')
+            ->subject('Nouvelle demande de partenaire - KONEXA')
             ->greeting('Bonjour Administrateur,')
-            ->line("Une nouvelle agence a demandé à rejoindre AB-Flash :")
+            ->line('Une nouvelle agence a demandé à rejoindre KONEXA :')
             ->line("**Nom :** {$agency->name}")
             ->line("**Email :** {$agency->user->email}")
             ->line("**Adresse :** {$agency->address}")
             ->line("**WhatsApp :** {$agency->whatsapp}")
             ->action('Voir les demandes', url('/admin/agencies'))
-            ->line('Merci d\'utiliser AB-Flash.');
+            ->line('Merci d\'utiliser KONEXA.');
     }
 
     /**

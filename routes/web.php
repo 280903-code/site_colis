@@ -26,6 +26,8 @@ Route::post('/devenir-partenaire', [PartnerController::class, 'register'])->name
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/agencies', [AdminDashboardController::class, 'agencies'])->name('agencies');
+    Route::get('/agencies/{agency}/edit', [AdminDashboardController::class, 'editAgency'])->name('agencies.edit');
+    Route::put('/agencies/{agency}', [AdminDashboardController::class, 'updateAgency'])->name('agencies.update');
     Route::post('/agencies/{agency}/approve', [AdminDashboardController::class, 'approveAgency'])->name('agencies.approve');
     Route::post('/agencies/{agency}/reject', [AdminDashboardController::class, 'rejectAgency'])->name('agencies.reject');
     Route::post('/agencies/{agency}/suspend', [AdminDashboardController::class, 'suspendAgency'])->name('agencies.suspend');
@@ -51,4 +53,4 @@ Route::middleware(['auth', 'role:admin_agence'])->prefix('admin-agence')->name('
     Route::post('/routes', [AgencyDashboardController::class, 'updateRoutes'])->name('routes.update');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Devenir partenaire | AB-Flash')
+@section('title', 'Devenir partenaire | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -10,7 +10,7 @@
 <div class="auth-container">
   <div class="auth-card">
     <h1>Devenir partenaire</h1>
-    <p>Inscrivez votre agence sur AB-Flash pour être visible par les clients.</p>
+    <p>Inscrivez votre agence sur KONEXA pour être visible par les clients.</p>
 
     <form method="POST" action="{{ route('partner.register') }}" class="auth-form">
       @csrf

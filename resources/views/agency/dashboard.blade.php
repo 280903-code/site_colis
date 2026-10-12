@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Espace agence | AB-Flash')
+@section('title', 'Espace agence | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -37,6 +37,7 @@
       <h2>Prochains vols</h2>
       <a href="{{ route('agency.flights') }}" class="btn btn-sm">Voir tout</a>
     </div>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Prochains vols">
     <table class="data-table">
       <thead>
         <tr>
@@ -65,6 +66,7 @@
         @endforeach
       </tbody>
     </table>
+    </div>
   </div>
 </div>
 @endsection

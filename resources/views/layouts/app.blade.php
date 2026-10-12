@@ -70,7 +70,7 @@
   <footer>
     <div class="w footer-main">
       <div class="footer-brand">
-        <a class="logo" href="{{ route('home') }}">AB-<span>Flash</span></a>
+        <a class="logo" href="{{ route('home') }}">KONE<span>XA</span></a>
         <p>Comparez les agences et trouvez vos solutions d'envoi entre le Sénégal, les Comores et la France.</p>
       </div>
       <div class="footer-column">
@@ -118,7 +118,7 @@
       </div>
     </div>
     <div class="w footer-bottom">
-      <span>&copy; {{ now()->year }} AB-Flash. Tous droits réservés.</span>
+      <span>&copy; {{ now()->year }} KONEXA. Tous droits réservés.</span>
       <span>Les tarifs et disponibilités sont communiqués par les agences. Confirmez-les avant tout dépôt.</span>
     </div>
   </footer>

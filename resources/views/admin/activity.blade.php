@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Journal d\'activité | AB-Flash')
+@section('title', 'Journal d\'activité | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -16,6 +16,7 @@
     <div class="table-header">
       <h2>Actions administrateur ({{ $activities->total() }})</h2>
     </div>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Journal des actions administrateur">
     <table class="data-table">
       <thead>
         <tr>
@@ -36,6 +37,7 @@
         @endforeach
       </tbody>
     </table>
+    </div>
     {{ $activities->links() }}
   </div>
 </div>

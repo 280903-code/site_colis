@@ -106,3 +106,44 @@
     text-align: center;
     margin-top: 22px
 }
+
+.agency-marquees {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px
+}
+
+.agency-marquee {
+    min-width: 0;
+    width: 100%;
+    margin-inline: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch
+}
+
+.agency-marquee::-webkit-scrollbar {
+    display: none
+}
+
+.agency-marquee__track,
+.agency-marquee__group {
+    display: flex;
+    width: max-content;
+}
+
+.agency-marquee__group {
+    flex: 0 0 auto;
+    gap: 16px;
+    padding-right: 16px
+}
+
+.agency-marquee__group > .ag {
+    flex: 0 0 min(440px, calc(100vw - 48px));
+    width: min(440px, calc(100vw - 48px));
+    scroll-snap-align: start
+}

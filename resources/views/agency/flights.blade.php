@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mes vols | AB-Flash')
+@section('title', 'Mes vols | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -17,6 +17,7 @@
   </div>
 
   <div class="table-container">
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Mes vols à venir">
     <table class="data-table">
       <thead>
         <tr>
@@ -60,6 +61,7 @@
         @endforeach
       </tbody>
     </table>
+    </div>
     {{ $flights->links() }}
   </div>
 </div>

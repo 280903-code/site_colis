@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mon profil | AB-Flash')
+@section('title', 'Mon profil | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">

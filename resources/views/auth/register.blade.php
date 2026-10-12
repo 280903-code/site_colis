@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Inscription | AB-Flash')
+@section('title', 'Inscription | KONEXA')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">

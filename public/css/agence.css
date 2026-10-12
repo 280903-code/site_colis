@@ -1,8 +1,13 @@
 /* Page d'une agence : colonne agence + grille de vols */
 .routes.in {
+  width: 100%;
   padding: 0;
   margin: 14px 0 0;
-  max-width: none
+  max-width: none;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth
 }
 
 .agency {
@@ -138,12 +143,9 @@
   align-content: start
 }
 
-.fc.low {
-  border-top-color: var(--o)
-}
 
 .fc.full {
-  border-top-color: var(--r)
+  border-color: var(--r)
 }
 
 .fc.full .head,
