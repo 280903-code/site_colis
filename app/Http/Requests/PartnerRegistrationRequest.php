@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\Country;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,14 +28,20 @@ class PartnerRegistrationRequest extends FormRequest
 
         if (is_array($routes)) {
             foreach ($routes as $index => $route) {
-                if (! is_string($route)) {
-                    continue;
+                if (is_string($route)) {
+                    $decodedRoute = json_decode($route, true);
+
+                    if (is_array($decodedRoute)) {
+                        $routes[$index] = $decodedRoute;
+                    }
                 }
 
-                $decodedRoute = json_decode($route, true);
-
-                if (is_array($decodedRoute)) {
-                    $routes[$index] = $decodedRoute;
+                if (is_array($routes[$index])) {
+                    foreach (['from', 'to'] as $field) {
+                        if (isset($routes[$index][$field]) && is_string($routes[$index][$field])) {
+                            $routes[$index][$field] = Country::normalize($routes[$index][$field]);
+                        }
+                    }
                 }
             }
 
@@ -67,8 +74,8 @@ class PartnerRegistrationRequest extends FormRequest
             'whatsapp' => 'required|string|regex:/^[0-9]+$/|min:10|max:15',
             'routes' => 'required|array|min:1',
             'routes.*' => 'array',
-            'routes.*.from' => 'required|in:SN,KM,FR',
-            'routes.*.to' => 'required|in:SN,KM,FR|different:routes.*.from',
+            'routes.*.from' => 'required|string|max:100',
+            'routes.*.to' => 'required|string|max:100|different:routes.*.from',
             'website' => 'nullable|max:255', // Honeypot field
         ];
     }

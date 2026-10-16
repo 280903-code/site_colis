@@ -51,7 +51,7 @@ button {
 .w {
   max-width: 960px;
   margin: auto;
-  padding: 0 20px
+  padding: 20px
 }
 
 a {
@@ -62,8 +62,9 @@ header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--vd);
-  color: #fff;
+  background: #fff;
+  color: var(--t);
+  border-bottom: 1px solid var(--l);
   padding-top: env(safe-area-inset-top, 0)
 }
 
@@ -90,7 +91,7 @@ header .w {
 header a.n {
   font-size: .9rem;
   font-weight: 600;
-  color: #D5EBDC;
+  color: var(--g);
   text-decoration: none
 }
 
@@ -101,7 +102,21 @@ header a.n {
 }
 
 .nav-menu a.n:hover {
-  color: #fff
+  color: var(--v)
+}
+
+.nav-logout {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--g);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer
+}
+
+.nav-logout:hover {
+  color: var(--v)
 }
 
 .header-actions {
@@ -118,14 +133,14 @@ header a.n {
   display: grid;
   place-items: center;
 
-  color: #fff;
+  color: var(--t);
   transition: background .18s ease, border-color .18s ease
 }
 
 .theme-toggle:hover,
 .mobile-menu-btn:hover {
-  background: rgba(255, 255, 255, .12);
-  border-color: rgba(255, 255, 255, .4)
+  background: rgba(0, 0, 0, .06);
+  border-color: rgba(0, 0, 0, .15)
 }
 
 .theme-icon,
@@ -192,8 +207,9 @@ h2.t {
 }
 
 footer {
-  background: #12151a;
-  color: #B7D8C2;
+  background: #fff;
+  color: var(--g);
+  border-top: 1px solid var(--l);
   padding: 48px 0 20px;
   font-size: .9rem
 }
@@ -210,12 +226,12 @@ footer {
 }
 
 .footer-brand .logo {
-  color: #fff
+  color: var(--t)
 }
 
 .footer-brand p {
   margin-top: 14px;
-  color: #949191;
+  color: var(--g);
   line-height: 1.8
 }
 
@@ -229,19 +245,19 @@ footer {
 .footer-column h2,
 .footer-social h2 {
   font-size: .95rem;
-  color: #fff;
+  color: var(--t);
   font-weight: 700;
   margin-bottom: 4px
 }
 
 .footer-column a {
-  color: #949191;
+  color: var(--g);
   text-decoration: none;
   overflow-wrap: anywhere
 }
 
 .footer-column a:hover {
-  color: #fff
+  color: var(--v)
 }
 
 .social-links {
@@ -254,9 +270,9 @@ footer {
   height: 40px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, .22);
+  border: 1px solid var(--l);
   border-radius: 11px;
-  color: #fff;
+  color: var(--g);
   transition: background .18s ease, transform .18s ease
 }
 
@@ -283,7 +299,7 @@ footer {
 
 .social-note {
   font-size: .72rem;
-  color: #93a69a;
+  color: var(--g);
   line-height: 1.5
 }
 
@@ -291,15 +307,19 @@ footer {
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  border-top: 1px solid rgba(255, 255, 255, .14);
+  border-top: 1px solid var(--l);
   padding-top: 18px;
-  color: #93a69a;
+  color: var(--g);
   font-size: .76rem
 }
 
 @media(prefers-reduced-motion:reduce) {
   * {
     scroll-behavior: auto !important
+  }
+
+  body > header ~ :not(footer):not(script) {
+    animation: none !important
   }
 }
 
@@ -328,21 +348,30 @@ body {
   }
 
   .nav-menu {
-    display: none;
+    display: flex;
+    visibility: hidden;
     position: absolute;
     top: 100%;
     left: 0px;
     right: 0px;
-    background: var(--vd);
+    background: #fff;
     flex-direction: column;
     align-items: stretch;
     padding: 16px 20px 20px;
     gap: 12px;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2)
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s
   }
 
   .nav-menu.active {
-    display: flex
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity .2s ease, transform .2s ease
   }
 
   .nav-menu a.n {
@@ -368,6 +397,80 @@ body {
 
   .footer-bottom {
     flex-direction: column
+  }
+}
+
+.route-editor {
+  display: grid;
+  gap: 10px
+}
+
+.route-editor__rows {
+  display: grid;
+  gap: 10px
+}
+
+.route-editor__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px
+}
+
+.route-editor__row label {
+  min-width: 0
+}
+
+.route-editor__remove,
+.route-editor__add {
+  width: fit-content;
+  border: 1px solid var(--l);
+  border-radius: 9px;
+  padding: 9px 12px;
+  color: var(--v);
+  font-size: .85rem;
+  font-weight: 600
+}
+
+.route-editor__remove {
+  margin-bottom: 6px
+}
+
+.route-editor__add:hover,
+.route-editor__remove:hover {
+  background: var(--bg)
+}
+
+@media(max-width:520px) {
+  .route-editor__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+  }
+
+  .route-editor__remove {
+    grid-column: 1 / -1;
+    margin: 0
+  }
+}
+
+body > header ~ :not(footer):not(script) {
+  animation: page-content-enter .36s ease-out both
+}
+
+@keyframes page-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .nav-menu {
+    transition: none
   }
 }
 

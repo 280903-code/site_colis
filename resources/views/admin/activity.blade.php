@@ -7,7 +7,9 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container">
+<div class="admin-shell">
+  @include('admin.partials.navigation')
+  <main class="dashboard-container admin-main">
   <div class="dashboard-header">
     <h1>Journal d'activité</h1>
   </div>
@@ -40,5 +42,6 @@
     </div>
     {{ $activities->links() }}
   </div>
+  </main>
 </div>
 @endsection

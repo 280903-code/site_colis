@@ -11,6 +11,8 @@ class PublicInformationPagesTest extends TestCase
         $this->get(route('about'))
             ->assertOk()
             ->assertSee('KONEXA aide chacun')
+            ->assertSee('Le projet et son fondateur')
+            ->assertSee(asset('img/founder-portrait-placeholder.jpg'), false)
             ->assertSee('Toutes les agences')
             ->assertSee(route('contact'));
     }

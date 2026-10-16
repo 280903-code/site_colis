@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\PartnerApplication;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -14,9 +16,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('auth.login');
+        $email = $request->session()->getOldInput('email');
+        $hasPendingPartnerApplication = is_string($email)
+            && PartnerApplication::query()
+                ->where('email', Str::lower(trim($email)))
+                ->exists();
+
+        return view('auth.login', compact('hasPendingPartnerApplication'));
     }
 
     /**

@@ -8,7 +8,6 @@ use App\Models\Flight;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AdminDashboardController extends Controller
@@ -55,7 +54,7 @@ class AdminDashboardController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('address', 'like', "%{$search}%");
             });
         }
 
@@ -190,7 +189,7 @@ class AdminDashboardController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
@@ -203,12 +202,16 @@ class AdminDashboardController extends Controller
     {
         $search = $request->get('search', '');
 
-        $query = Flight::with('agency');
+        $query = Flight::with([
+            'agency' => fn ($agencyQuery) => $agencyQuery->withTrashed(),
+        ]);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('airline', 'like', "%{$search}%")
-                  ->orWhereHas('agency', fn($a) => $a->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('agency', fn ($agencyQuery) => $agencyQuery
+                        ->withTrashed()
+                        ->where('name', 'like', "%{$search}%"));
             });
         }
 

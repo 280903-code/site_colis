@@ -33,7 +33,7 @@
       <tbody>
         @foreach($flights as $flight)
         <tr>
-          <td>{{ $flight->from_country }} → {{ $flight->to_country }}</td>
+          <td>{{ \App\Support\Country::label($flight->from_country) }} → {{ \App\Support\Country::label($flight->to_country) }}</td>
           <td>{{ $flight->flight_date->format('d/m/Y') }}</td>
           <td>{{ $flight->airline }}</td>
           <td>{{ $flight->remaining_kg }} / {{ $flight->total_kg }} kg</td>

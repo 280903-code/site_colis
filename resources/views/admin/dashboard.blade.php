@@ -7,42 +7,38 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container">
+<div class="admin-shell">
+  @include('admin.partials.navigation')
+  <main class="dashboard-container admin-main">
   <div class="dashboard-header">
     <h1>Tableau de bord</h1>
+    <p>Bienvenue dans votre espace de gestion KONEXA.</p>
   </div>
-
-  <nav class="admin-links" aria-label="Navigation administration">
-    <a href="{{ route('admin.agencies') }}" class="btn btn-sm">Agences</a>
-    <a href="{{ route('admin.flights') }}" class="btn btn-sm">Vols</a>
-    <a href="{{ route('admin.users') }}" class="btn btn-sm">Utilisateurs</a>
-    <a href="{{ route('admin.activity') }}" class="btn btn-sm">Activité</a>
-  </nav>
 
   @include('admin.partials.feedback')
 
-  <div class="stats-grid">
-    <div class="stat-card">
+  <section class="stats-grid" aria-label="Indicateurs de gestion">
+    <article class="stat-card">
       <div class="number">{{ $stats['total_agencies'] }}</div>
       <div class="label">Agences totales</div>
-    </div>
-    <div class="stat-card">
+    </article>
+    <article class="stat-card">
       <div class="number">{{ $stats['pending_agencies'] }}</div>
       <div class="label">En attente</div>
-    </div>
-    <div class="stat-card">
+    </article>
+    <article class="stat-card">
       <div class="number">{{ $stats['approved_agencies'] }}</div>
       <div class="label">Approuvées</div>
-    </div>
-    <div class="stat-card">
+    </article>
+    <article class="stat-card">
       <div class="number">{{ $stats['upcoming_flights'] }}</div>
       <div class="label">Vols à venir</div>
-    </div>
-    <div class="stat-card">
+    </article>
+    <article class="stat-card">
       <div class="number">{{ $stats['total_users'] }}</div>
       <div class="label">Utilisateurs</div>
-    </div>
-  </div>
+    </article>
+  </section>
 
   @if($pendingAgencies->count() > 0)
   <div class="table-container">
@@ -147,6 +143,7 @@
     </table>
     </div>
   </div>
+  </main>
 </div>
 
 <!-- Reject Modal -->

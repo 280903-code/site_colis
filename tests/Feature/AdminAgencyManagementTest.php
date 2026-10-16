@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\ActivityLog;
 use App\Models\Agency;
+use App\Models\Flight;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -46,6 +47,60 @@ class AdminAgencyManagementTest extends TestCase
             ->assertSee(route('admin.agencies.reject', $agency), false)
             ->assertSee(route('admin.agencies.edit', $agency), false)
             ->assertSee('Navigation administration');
+    }
+
+    public function test_admin_can_open_and_update_their_profile(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee('Informations personnelles')
+            ->assertSee('Changer le mot de passe')
+            ->assertSee(route('admin.agencies'), false);
+
+        $this->actingAs($admin)
+            ->patch(route('profile.update'), [
+                'name' => 'Admin KONEXA',
+                'email' => 'admin-konexa@example.com',
+            ])
+            ->assertRedirect(route('profile.edit'));
+
+        $this->assertDatabaseHas('users', [
+            'id' => $admin->id,
+            'name' => 'Admin KONEXA',
+            'email' => 'admin-konexa@example.com',
+            'email_verified_at' => null,
+        ]);
+    }
+
+    public function test_agency_users_cannot_open_the_admin_profile(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+
+        $this->actingAs($agencyUser)
+            ->get(route('profile.edit'))
+            ->assertForbidden();
+    }
+
+    public function test_admin_flights_page_includes_flights_from_soft_deleted_agencies(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $agency = Agency::factory()->create(['name' => 'Agence archivée']);
+        Flight::factory()->for($agency)->create([
+            'flight_date' => now()->addWeek(),
+            'drop_off_deadline' => now()->addDays(6),
+        ]);
+        $agency->delete();
+
+        $this->actingAs($admin)
+            ->get(route('admin.flights', ['search' => 'Agence archivée']))
+            ->assertOk()
+            ->assertSee('Agence archivée');
     }
 
     public function test_admin_can_update_agency_details_and_sees_confirmation(): void

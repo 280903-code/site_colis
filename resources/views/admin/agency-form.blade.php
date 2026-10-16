@@ -7,7 +7,9 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container">
+<div class="admin-shell">
+  @include('admin.partials.navigation')
+  <main class="dashboard-container admin-main">
   <div class="dashboard-header">
     <h1>Modifier l'agence</h1>
     <a href="{{ route('admin.agencies') }}" class="btn o btn-sm">Retour aux agences</a>
@@ -61,5 +63,6 @@
       </form>
     @endif
   </div>
+  </main>
 </div>
 @endsection

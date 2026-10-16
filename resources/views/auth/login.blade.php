@@ -23,6 +23,10 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
         @error('email') <div class="error">{{ $message }}</div> @enderror
+        @if ($errors->has('email') && $hasPendingPartnerApplication)
+          <p>Si vous venez de demander un compte partenaire, confirmez d’abord votre adresse e-mail avant de vous connecter.</p>
+          <a href="{{ route('partner.verification.pending') }}">Renvoyer le lien de vérification</a>
+        @endif
       </div>
 
       <div>

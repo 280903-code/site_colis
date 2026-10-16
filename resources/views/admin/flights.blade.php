@@ -7,7 +7,9 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container">
+<div class="admin-shell">
+  @include('admin.partials.navigation')
+  <main class="dashboard-container admin-main">
   <div class="dashboard-header">
     <h1>Supervision des vols</h1>
   </div>
@@ -38,8 +40,8 @@
       <tbody>
         @foreach($flights as $flight)
         <tr>
-          <td>{{ $flight->agency->name }}</td>
-          <td>{{ $flight->from_country }} → {{ $flight->to_country }}</td>
+          <td>{{ $flight->agency?->name ?? 'Agence indisponible' }}</td>
+          <td>{{ \App\Support\Country::label($flight->from_country) }} → {{ \App\Support\Country::label($flight->to_country) }}</td>
           <td>{{ $flight->flight_date->format('d/m/Y') }}</td>
           <td>{{ $flight->airline }}</td>
           <td>{{ $flight->remaining_kg }} / {{ $flight->total_kg }} kg</td>
@@ -56,5 +58,6 @@
     </div>
     {{ $flights->links() }}
   </div>
+  </main>
 </div>
 @endsection

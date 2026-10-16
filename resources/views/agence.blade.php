@@ -29,7 +29,7 @@
           <a class="chip{{ $from === '_' && $to === '_' ? ' on' : '' }}" href="{{ route('agence.show', ['slug' => $agency->slug]) }}">Tous</a>
           @foreach($agency->routes as $route)
             <a class="chip{{ $route->from_country === $from && $route->to_country === $to ? ' on' : '' }}" href="{{ route('agence.show', ['slug' => $agency->slug, 'from' => $route->from_country, 'to' => $route->to_country]) }}">
-              {{ $countries[$route->from_country] }} → {{ $countries[$route->to_country] }}
+              {{ \App\Support\Country::label($route->from_country) }} → {{ \App\Support\Country::label($route->to_country) }}
             </a>
           @endforeach
         </nav>

@@ -17,21 +17,26 @@
     <form class="search" id="sf" action="{{ url('/agences') }}" method="get">
       <div>
         <label for="f">Départ</label>
-        <select id="f" name="from">
-          <option value="_">Tous les pays</option><option value="SN">Sénégal</option><option value="KM">Comores</option><option value="FR">France</option>
-        </select>
+        <input id="f" name="from" value="{{ $from === '_' ? '' : \App\Support\Country::label($from) }}" list="country-options" placeholder="Tous les pays" autocomplete="off">
       </div>
       <button type="button" class="swap" id="sw" aria-label="Inverser départ et destination">⇄</button>
       <div>
         <label for="t">Destination</label>
-        <select id="t" name="to">
-          <option value="_">Tous les pays</option><option value="SN">Sénégal</option><option value="KM">Comores</option><option value="FR">France</option>
-        </select>
+        <input id="t" name="to" value="{{ $to === '_' ? '' : \App\Support\Country::label($to) }}" list="country-options" placeholder="Tous les pays" autocomplete="off">
       </div>
       <button class="go">Rechercher</button>
     </form>
+    <datalist id="country-options">
+      @foreach($countryOptions as $country)
+        <option value="{{ $country }}"></option>
+      @endforeach
+    </datalist>
   </div>
-  <nav class="routes" id="routes" aria-label="Trajets fréquents"></nav>
+  <nav class="routes" id="routes" aria-label="Exemples de trajets internationaux">
+    @foreach(\App\Support\Country::popularRoutes() as [$routeFrom, $routeTo])
+      <a class="chip{{ $routeFrom === $from && $routeTo === $to ? ' on' : '' }}" href="{{ route('agences', ['from' => $routeFrom, 'to' => $routeTo]) }}">{{ \App\Support\Country::label($routeFrom) }} → {{ \App\Support\Country::label($routeTo) }}</a>
+    @endforeach
+  </nav>
 
   <main class="w">
     <h2 class="t">{{ $filteredAgencies->count() }} agence{{ $filteredAgencies->count() > 1 ? 's' : '' }}{{ $hasFilter ? ' pour ce trajet' : '' }}</h2>
@@ -54,19 +59,7 @@
 <script>
 (function () {
   const $ = s => document.querySelector(s);
-  const countries = {SN:"Sénégal", KM:"Comores", FR:"France"};
-  const quick = [["SN","KM"], ["KM","SN"], ["SN","FR"], ["FR","SN"], ["FR","KM"], ["KM","FR"]];
-  const from = "{{ $from }}";
-  const to = "{{ $to }}";
-
-  $("#f").value = from;
-  $("#t").value = to;
-
   $("#sw").onclick = () => { const a = $("#f").value; $("#f").value = $("#t").value; $("#t").value = a; };
-
-  $("#routes").innerHTML = quick.map(q =>
-    `<a class="chip${q[0] === from && q[1] === to ? " on" : ""}" href="{{ url('/agences') }}?from=${q[0]}&to=${q[1]}">${countries[q[0]]} → ${countries[q[1]]}</a>`
-  ).join("");
 })();
 </script>
 @endpush

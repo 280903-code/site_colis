@@ -13,26 +13,26 @@
     <a href="{{ route('agency.dashboard') }}" class="btn btn-sm">← Retour</a>
   </div>
 
-  <div class="auth-card" style="max-width: 600px;">
-    <h1>Modifier les trajets desservis</h1>
-    <form method="POST" action="{{ route('agency.routes.update') }}" class="auth-form">
+  <section class="agency-settings-card agency-routes-card">
+    <div class="agency-settings-intro">
+      <span class="agency-settings-eyebrow">Destinations de l'agence</span>
+      <h2>Modifier les trajets desservis</h2>
+      <p>Ajoutez chaque itinéraire que votre agence propose. Vous pouvez saisir le nom de n'importe quel pays.</p>
+    </div>
+    <form method="POST" action="{{ route('agency.routes.update') }}" class="agency-settings-form">
       @csrf
 
-      <div>
-        <label>Trajets desservis</label>
-        <div style="display: grid; gap: 8px;">
-          @foreach([['SN', 'KM'], ['KM', 'SN'], ['SN', 'FR'], ['FR', 'SN'], ['FR', 'KM'], ['KM', 'FR']] as $route)
-            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
-              <input type="checkbox" name="routes[]" value="{{ json_encode(['from' => $route[0], 'to' => $route[1]]) }}" {{ $agency->routes->contains(fn($r) => $r->from_country === $route[0] && $r->to_country === $route[1]) ? 'checked' : '' }}>
-              {{ $route[0] === 'SN' ? 'Sénégal' : ($route[0] === 'KM' ? 'Comores' : 'France') }} → {{ $route[1] === 'SN' ? 'Sénégal' : ($route[1] === 'KM' ? 'Comores' : 'France') }}
-            </label>
-          @endforeach
-        </div>
-        @error('routes') <div class="error">{{ $message }}</div> @enderror
-      </div>
+      @php
+        $routeValues = $agency->routes
+          ->map(fn($route) => ['from' => $route->from_country, 'to' => $route->to_country])
+          ->all();
+      @endphp
+      <x-route-editor :routes="$routeValues" />
 
-      <button type="submit" class="btn">Enregistrer</button>
+      <div class="agency-settings-actions">
+        <button type="submit" class="btn">Enregistrer les trajets</button>
+      </div>
     </form>
-  </div>
+  </section>
 </div>
 @endsection

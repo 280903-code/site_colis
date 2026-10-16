@@ -6,13 +6,15 @@
     gap: 6px;
     padding: 18px 12px 4px;
     margin: 0 auto;
-    justify-content: center;
+    justify-content: safe center;
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 122, 62, .45) transparent;
     overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 12px;
+    touch-action: pan-x
 }
 
 .routes.is-scrollable {
@@ -20,7 +22,16 @@
 }
 
 .routes::-webkit-scrollbar {
-    display: none
+    height: 4px
+}
+
+.routes::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background: rgba(15, 122, 62, .45)
+}
+
+.routes::-webkit-scrollbar-track {
+    background: transparent
 }
 
 .chip {

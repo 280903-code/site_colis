@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description"
-    content="Comparez les agences de colis entre le Sénégal, les Comores et la France, voyez les vols et les kilos restants.">
-  <title>@yield('title', 'KONEXA | Agences de colis Sénégal, Comores, France')</title>
+    content="Comparez les agences de colis et les trajets internationaux, consultez les vols et contactez directement les partenaires.">
+  <title>@yield('title', 'KONEXA | Agences et envois internationaux')</title>
   <link rel="icon"
     href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;📦&lt;/text&gt;&lt;/svg&gt;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,9 @@
   <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 </head>
 
-<body>
+@php($isAuthPage = request()->routeIs('login', 'register', 'partner.register.form', 'partner.verify', 'partner.verification.pending', 'partner.verification.resend', 'password.*'))
+
+<body class="{{ $isAuthPage ? 'auth-page' : '' }}">
   <header>
     <div class="w">
       <a class="logo" href="{{ url('/') }}">KO<span>NEXA</span></a>
@@ -33,13 +35,12 @@
           @endif
           <form method="POST" action="{{ route('logout') }}" style="display: inline;">
             @csrf
-            <button type="submit" class="n"
-              style="background: none; border: none; color: #D5EBDC; font-size: 0.9rem; font-weight: 600; cursor: pointer;">Déconnexion</button>
+            <button type="submit" class="n nav-logout">Déconnexion</button>
           </form>
         @else
           <a class="n" href="{{ route('login') }}">Connexion</a>
           <a class="n btn-mobile" href="{{ route('partner.register.form') }}"
-            style="background: var(--j); color: var(--t); padding: 8px 16px; border-radius: 8px;">Devenir partenaire</a>
+            style="background: var(--j); color: #14231A; padding: 8px 16px; border-radius: 8px;">Devenir partenaire</a>
         @endif
       </nav>
       <div class="header-actions">
@@ -67,11 +68,12 @@
 
   @yield('content')
 
+  @unless($isAuthPage)
   <footer>
     <div class="w footer-main">
       <div class="footer-brand">
         <a class="logo" href="{{ route('home') }}">KONE<span>XA</span></a>
-        <p>Comparez les agences et trouvez vos solutions d'envoi entre le Sénégal, les Comores et la France.</p>
+        <p>Comparez les agences et trouvez des solutions d'envoi pour vos trajets internationaux.</p>
       </div>
       <div class="footer-column">
         <h2>Découvrir</h2>
@@ -122,6 +124,7 @@
       <span>Les tarifs et disponibilités sont communiqués par les agences. Confirmez-les avant tout dépôt.</span>
     </div>
   </footer>
+  @endunless
   <script src="{{ asset('js/theme.js') }}"></script>
   <script>
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');

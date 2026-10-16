@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'KONEXA | Agences de colis Sénégal, Comores, France')
+@section('title', 'KONEXA | Agences et envois internationaux')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/hero.css') }}">
@@ -12,7 +12,7 @@
   <section class="home-hero">
     <div class="home-hero__layout">
       <div class="home-hero__copy">
-        <span class="home-hero__eyebrow">Sénégal · Comores · France</span>
+        <span class="home-hero__eyebrow">Des trajets de colis partout dans le monde</span>
         <h1>Vos colis voyagent mieux avec KONEXA.</h1>
         <div class="home-hero__actions">
           <a class="btn" href="{{ route('agences') }}">Trouver une agence</a>
@@ -56,21 +56,26 @@
     <form class="search" id="sf" action="{{ url('/agences') }}" method="get">
       <div>
         <label for="f">Départ</label>
-        <select id="f" name="from">
-          <option value="_">Tous les pays</option><option value="SN">Sénégal</option><option value="KM">Comores</option><option value="FR">France</option>
-        </select>
+        <input id="f" name="from" list="country-options" placeholder="Tous les pays" autocomplete="off">
       </div>
       <button type="button" class="swap" id="sw" aria-label="Inverser départ et destination">⇄</button>
       <div>
         <label for="t">Destination</label>
-        <select id="t" name="to">
-          <option value="_">Tous les pays</option><option value="SN">Sénégal</option><option value="KM">Comores</option><option value="FR">France</option>
-        </select>
+        <input id="t" name="to" list="country-options" placeholder="Tous les pays" autocomplete="off">
       </div>
       <button class="go">Rechercher</button>
     </form>
+    <datalist id="country-options">
+      @foreach($countryOptions as $country)
+        <option value="{{ $country }}"></option>
+      @endforeach
+    </datalist>
   </div>
-  <nav class="routes" id="routes" data-route-scroller aria-label="Trajets fréquents"></nav>
+  <nav class="routes" id="routes" data-route-scroller aria-label="Exemples de trajets internationaux">
+    @foreach(\App\Support\Country::popularRoutes() as [$routeFrom, $routeTo])
+      <a class="chip" href="{{ route('agences', ['from' => $routeFrom, 'to' => $routeTo]) }}">{{ \App\Support\Country::label($routeFrom) }} → {{ \App\Support\Country::label($routeTo) }}</a>
+    @endforeach
+  </nav>
 
   <main class="w">
     <h2 class="t">Les agences</h2>
@@ -106,14 +111,7 @@
 <script>
 (function () {
   const $ = s => document.querySelector(s);
-  const countries = {SN:"Sénégal", KM:"Comores", FR:"France"};
-  const quick = [["SN","KM"], ["KM","SN"], ["SN","FR"], ["FR","SN"], ["FR","KM"], ["KM","FR"]];
-
   $("#sw").onclick = () => { const a = $("#f").value; $("#f").value = $("#t").value; $("#t").value = a; };
-
-  $("#routes").innerHTML = quick.map(q =>
-    `<a class="chip" href="{{ url('/agences') }}?from=${q[0]}&to=${q[1]}">${countries[q[0]]} → ${countries[q[1]]}</a>`
-  ).join("");
 
   const routes = $("#routes");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");

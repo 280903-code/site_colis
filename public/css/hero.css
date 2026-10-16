@@ -40,12 +40,14 @@
     font-weight: 600
 }
 
-.search select {
+.search select,
+.search input {
     width: 100%;
     padding: 11px 10px;
     border: 1.5px solid var(--l);
     border-radius: 10px;
-    background: #fff
+    background: #fff;
+    font: inherit
 }
 
 .swap {
@@ -264,7 +266,8 @@
     color: var(--t)
 }
 
-[data-theme="dark"] .search select {
+[data-theme="dark"] .search select,
+[data-theme="dark"] .search input {
     border-color: var(--l);
     background: #0c0e12;
     color: var(--t)

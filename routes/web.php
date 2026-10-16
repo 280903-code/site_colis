@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AgencyDashboardController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,17 @@ Route::view('/a-propos', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
 
 Route::get('/devenir-partenaire', [PartnerController::class, 'showRegistrationForm'])->name('partner.register.form');
-Route::post('/devenir-partenaire', [PartnerController::class, 'register'])->name('partner.register');
+Route::post('/devenir-partenaire', [PartnerController::class, 'register'])
+    ->middleware('throttle:5,1')
+    ->name('partner.register');
+Route::get('/verification-partenaire', [PartnerController::class, 'showVerificationPending'])
+    ->name('partner.verification.pending');
+Route::post('/verification-partenaire/renvoyer', [PartnerController::class, 'resendVerificationEmail'])
+    ->middleware('throttle:3,1')
+    ->name('partner.verification.resend');
+Route::match(['get', 'post'], '/verification-partenaire/{partnerApplication}/{token}', [PartnerController::class, 'verify'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('partner.verify');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -38,7 +49,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/activity', [AdminDashboardController::class, 'activity'])->name('activity');
 });
 
-Route::middleware(['auth', 'role:admin_agence'])->prefix('admin-agence')->name('agency.')->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin_agence'])->prefix('admin-agence')->name('agency.')->group(function () {
     Route::get('/', [AgencyDashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [AgencyDashboardController::class, 'profile'])->name('profile');
     Route::post('/profile', [AgencyDashboardController::class, 'updateProfile'])->name('profile.update');
@@ -53,4 +69,4 @@ Route::middleware(['auth', 'role:admin_agence'])->prefix('admin-agence')->name('
     Route::post('/routes', [AgencyDashboardController::class, 'updateRoutes'])->name('routes.update');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Agency;
 use App\Models\AgencyRoute;
 use App\Models\Flight;
+use App\Support\Country;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return view('agency.pending');
         }
 
@@ -41,7 +42,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return view('agency.pending');
         }
 
@@ -52,7 +53,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return back()->with('error', 'Agence non trouvée.');
         }
 
@@ -79,7 +80,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return view('agency.pending');
         }
 
@@ -95,7 +96,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return view('agency.pending');
         }
 
@@ -106,22 +107,24 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return back()->with('error', 'Agence non trouvée.');
         }
 
+        $this->normalizeFlightCountries($request);
+
         $request->validate([
-            'from_country' => 'required|in:SN,KM,FR',
-            'to_country' => 'required|in:SN,KM,FR|different:from_country',
+            'from_country' => 'required|string|max:100',
+            'to_country' => 'required|string|max:100|different:from_country',
             'flight_date' => 'required|date|after:today',
             'airline' => 'required|string|max:255',
             'total_kg' => 'required|integer|min:1',
-            'remaining_kg' => 'required|integer|min:0|max:' . $request->total_kg,
+            'remaining_kg' => 'required|integer|min:0|max:'.$request->total_kg,
             'price_per_kg' => 'required|numeric|min:0',
-            'currency' => 'required|in:FCFA,EUR',
+            'currency' => ['required', 'string', 'regex:/^[A-Z]{3,4}$/'],
         ]);
 
-        $flightDate = \Carbon\Carbon::parse($request->flight_date);
+        $flightDate = Carbon::parse($request->flight_date);
 
         Flight::create([
             'agency_id' => $agency->id,
@@ -153,19 +156,21 @@ class AgencyDashboardController extends Controller
     {
         $this->authorize('update', $flight);
 
+        $this->normalizeFlightCountries($request);
+
         $request->validate([
-            'from_country' => 'required|in:SN,KM,FR',
-            'to_country' => 'required|in:SN,KM,FR|different:from_country',
+            'from_country' => 'required|string|max:100',
+            'to_country' => 'required|string|max:100|different:from_country',
             'flight_date' => 'required|date|after:today',
             'airline' => 'required|string|max:255',
             'total_kg' => 'required|integer|min:1',
-            'remaining_kg' => 'required|integer|min:0|max:' . $request->total_kg,
+            'remaining_kg' => 'required|integer|min:0|max:'.$request->total_kg,
             'price_per_kg' => 'required|numeric|min:0',
-            'currency' => 'required|in:FCFA,EUR',
+            'currency' => ['required', 'string', 'regex:/^[A-Z]{3,4}$/'],
             'status' => 'required|in:open,full,cancelled',
         ]);
 
-        $flightDate = \Carbon\Carbon::parse($request->flight_date);
+        $flightDate = Carbon::parse($request->flight_date);
 
         $flight->update([
             'from_country' => $request->from_country,
@@ -210,7 +215,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return view('agency.pending');
         }
 
@@ -221,7 +226,7 @@ class AgencyDashboardController extends Controller
     {
         $agency = $this->getAgency();
 
-        if (!$agency) {
+        if (! $agency) {
             return back()->with('error', 'Agence non trouvée.');
         }
 
@@ -229,14 +234,20 @@ class AgencyDashboardController extends Controller
 
         if (is_array($routes)) {
             foreach ($routes as $index => $route) {
-                if (! is_string($route)) {
-                    continue;
+                if (is_string($route)) {
+                    $decodedRoute = json_decode($route, true);
+
+                    if (is_array($decodedRoute)) {
+                        $routes[$index] = $decodedRoute;
+                    }
                 }
 
-                $decodedRoute = json_decode($route, true);
-
-                if (is_array($decodedRoute)) {
-                    $routes[$index] = $decodedRoute;
+                if (is_array($routes[$index])) {
+                    foreach (['from', 'to'] as $field) {
+                        if (isset($routes[$index][$field]) && is_string($routes[$index][$field])) {
+                            $routes[$index][$field] = Country::normalize($routes[$index][$field]);
+                        }
+                    }
                 }
             }
 
@@ -246,8 +257,8 @@ class AgencyDashboardController extends Controller
         $request->validate([
             'routes' => 'required|array|min:1',
             'routes.*' => 'array',
-            'routes.*.from' => 'required|in:SN,KM,FR',
-            'routes.*.to' => 'required|in:SN,KM,FR|different:routes.*.from',
+            'routes.*.from' => 'required|string|max:100',
+            'routes.*.to' => 'required|string|max:100|different:routes.*.from',
         ]);
 
         DB::transaction(function () use ($agency, $request) {
@@ -263,5 +274,22 @@ class AgencyDashboardController extends Controller
         });
 
         return back()->with('success', 'Trajets mis à jour.');
+    }
+
+    private function normalizeFlightCountries(Request $request): void
+    {
+        foreach (['from_country', 'to_country'] as $field) {
+            $country = $request->input($field);
+
+            if (is_string($country)) {
+                $request->merge([$field => Country::normalize($country)]);
+            }
+        }
+
+        $currency = $request->input('currency');
+
+        if (is_string($currency)) {
+            $request->merge(['currency' => mb_strtoupper(trim($currency))]);
+        }
     }
 }

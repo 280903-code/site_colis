@@ -7,42 +7,46 @@
 @endpush
 
 @section('content')
+@php
+  $fromCountry = old('from_country', $flight->from_country ?? 'Sénégal');
+  $toCountry = old('to_country', $flight->to_country ?? 'Comores');
+  $fromCountry = is_string($fromCountry) ? \App\Support\Country::label($fromCountry) : 'Sénégal';
+  $toCountry = is_string($toCountry) ? \App\Support\Country::label($toCountry) : 'Comores';
+@endphp
 <div class="dashboard-container">
   <div class="dashboard-header">
     <h1>{{ isset($flight) ? 'Modifier vol' : 'Nouveau vol' }}</h1>
     <a href="{{ route('agency.flights') }}" class="btn btn-sm">← Retour</a>
   </div>
 
-<div class="auth-card flight-form-card">
-  <div class="flight-form-intro">
-    <h2>{{ isset($flight) ? 'Informations du vol' : 'Ajouter un vol' }}</h2>
-    <p>Renseignez les détails du trajet, les places disponibles et le tarif.</p>
-  </div>
-  <form method="POST" action="{{ isset($flight) ? route('agency.flights.update', $flight) : route('agency.flights.store') }}" class="auth-form flight-form">
-    @csrf
-    @if(isset($flight))
-      @method('PUT')
+  <section class="table-container flight-form-card">
+    <div class="flight-form-intro">
+      <span class="flight-form-eyebrow">{{ isset($flight) ? 'Mise à jour' : 'Gestion des vols' }}</span>
+      <h2>{{ isset($flight) ? 'Informations du vol' : 'Ajouter un vol' }}</h2>
+      <p>Renseignez le trajet, la capacité et le tarif pour informer vos clients.</p>
+    </div>
+    <form method="POST" action="{{ isset($flight) ? route('agency.flights.update', $flight) : route('agency.flights.store') }}" class="auth-form flight-form">
+      @csrf
+      @if(isset($flight))
+        @method('PUT')
       @endif
 
       <div>
         <label for="from_country">Pays de départ</label>
-        <select id="from_country" name="from_country" required>
-          <option value="SN" {{ old('from_country', $flight->from_country ?? 'SN') === 'SN' ? 'selected' : '' }}>Sénégal</option>
-          <option value="KM" {{ old('from_country', $flight->from_country ?? 'SN') === 'KM' ? 'selected' : '' }}>Comores</option>
-          <option value="FR" {{ old('from_country', $flight->from_country ?? 'SN') === 'FR' ? 'selected' : '' }}>France</option>
-        </select>
+        <input type="text" id="from_country" name="from_country" value="{{ $fromCountry }}" list="flight-country-options" placeholder="Ex. Sénégal" maxlength="100" required>
         @error('from_country') <div class="error">{{ $message }}</div> @enderror
       </div>
 
       <div>
         <label for="to_country">Pays de destination</label>
-        <select id="to_country" name="to_country" required>
-          <option value="SN" {{ old('to_country', $flight->to_country ?? 'KM') === 'SN' ? 'selected' : '' }}>Sénégal</option>
-          <option value="KM" {{ old('to_country', $flight->to_country ?? 'KM') === 'KM' ? 'selected' : '' }}>Comores</option>
-          <option value="FR" {{ old('to_country', $flight->to_country ?? 'KM') === 'FR' ? 'selected' : '' }}>France</option>
-        </select>
+        <input type="text" id="to_country" name="to_country" value="{{ $toCountry }}" list="flight-country-options" placeholder="Ex. Chine" maxlength="100" required>
         @error('to_country') <div class="error">{{ $message }}</div> @enderror
       </div>
+      <datalist id="flight-country-options">
+        @foreach(\App\Support\Country::suggestions() as $country)
+          <option value="{{ $country }}"></option>
+        @endforeach
+      </datalist>
 
       <div>
         <label for="flight_date">Date du vol</label>
@@ -76,10 +80,12 @@
 
       <div>
         <label for="currency">Devise</label>
-        <select id="currency" name="currency" required>
-          <option value="FCFA" {{ old('currency', $flight->currency ?? 'FCFA') === 'FCFA' ? 'selected' : '' }}>FCFA</option>
-          <option value="EUR" {{ old('currency', $flight->currency ?? 'FCFA') === 'EUR' ? 'selected' : '' }}>EUR</option>
-        </select>
+        <input type="text" id="currency" name="currency" value="{{ old('currency', $flight->currency ?? 'FCFA') }}" list="currency-options" maxlength="4" placeholder="Ex. USD" required>
+        <datalist id="currency-options">
+          @foreach(['FCFA', 'EUR', 'USD', 'CNY', 'GBP', 'CAD', 'XOF', 'XAF', 'INR', 'JPY', 'AUD', 'MAD', 'AED'] as $currency)
+            <option value="{{ $currency }}"></option>
+          @endforeach
+        </datalist>
         @error('currency') <div class="error">{{ $message }}</div> @enderror
       </div>
 
@@ -96,8 +102,11 @@
       @endif
 
       <p class="flight-form-hint">Vérifiez que les kilos restants ne dépassent pas la capacité totale du vol.</p>
-      <button type="submit" class="btn">{{ isset($flight) ? 'Mettre à jour' : 'Créer' }}</button>
+      <div class="flight-form-actions">
+        <a href="{{ route('agency.flights') }}" class="btn o">Annuler</a>
+        <button type="submit" class="btn">{{ isset($flight) ? 'Enregistrer les modifications' : 'Créer le vol' }}</button>
+      </div>
     </form>
-  </div>
+  </section>
 </div>
 @endsection

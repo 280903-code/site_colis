@@ -7,7 +7,9 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container">
+<div class="admin-shell">
+  @include('admin.partials.navigation')
+  <main class="dashboard-container admin-main">
   <div class="dashboard-header">
     <h1>Gestion des agences</h1>
   </div>
@@ -90,6 +92,7 @@
     </div>
     {{ $agencies->links() }}
   </div>
+  </main>
 </div>
 
 <!-- Reject Modal -->

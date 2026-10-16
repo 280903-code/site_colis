@@ -1,11 +1,9 @@
 @props(['agency', 'flight'])
 @php
-    $countries = ['SN' => 'Sénégal', 'KM' => 'Comores', 'FR' => 'France'];
-    $cities = ['SN' => 'Dakar', 'KM' => 'Moroni', 'FR' => 'Paris'];
     $percentage = round($flight->remaining_kg / $flight->total_kg * 100);
     $class = $flight->remaining_kg === 0 ? 'full' : ($percentage <= 30 ? 'low' : '');
     $deadline = $flight->flight_date->copy()->subDay();
-    $message = 'Bonjour ' . $agency->name . ', je voudrais réserver des kilos sur le vol du ' . $flight->flight_date->locale('fr')->isoFormat('D MMMM YYYY') . ' (' . $cities[$flight->from_country] . ' → ' . $cities[$flight->to_country] . '). Quel est le tarif et jusqu\'à quand puis-je déposer mon colis ?';
+    $message = 'Bonjour ' . $agency->name . ', je voudrais réserver des kilos sur le vol du ' . $flight->flight_date->locale('fr')->isoFormat('D MMMM YYYY') . ' (' . \App\Support\Country::city($flight->from_country) . ' → ' . \App\Support\Country::city($flight->to_country) . '). Quel est le tarif et jusqu\'à quand puis-je déposer mon colis ?';
 @endphp
 <article class="fc {{ $class }}">
     <div class="head">
@@ -14,7 +12,7 @@
             <span>{{ $flight->flight_date->locale('fr')->isoFormat('MMM') }}</span>
         </div>
         <div>
-            <p class="rt">{{ $cities[$flight->from_country] }} → {{ $cities[$flight->to_country] }}</p>
+            <p class="rt">{{ \App\Support\Country::city($flight->from_country) }} → {{ \App\Support\Country::city($flight->to_country) }}</p>
             <p class="wk"><em>{{ $flight->flight_date->locale('fr')->isoFormat('dddd') }}</em> · ✈ {{ $flight->airline }}</p>
         </div>
     </div>

@@ -1,14 +1,12 @@
 @props(['agency', 'from' => '_', 'to' => '_'])
 @php
-    $countries = ['SN' => 'Sénégal', 'KM' => 'Comores', 'FR' => 'France'];
-    $cities = ['SN' => 'Dakar', 'KM' => 'Moroni', 'FR' => 'Paris'];
     $initials = implode('', array_map(fn($w) => mb_substr($w, 0, 1), explode(' ', $agency->name)));
     $initials = mb_substr($initials, 0, 2);
 
     $flights = $agency->flights
         ->filter(fn($f) => $f->flight_date->isFuture() && $f->status !== 'cancelled')
-        ->filter(fn($f) => $from === '_' || $f->from_country === $from)
-        ->filter(fn($f) => $to === '_' || $f->to_country === $to)
+        ->filter(fn($f) => $from === '_' || \App\Support\Country::normalize($f->from_country) === \App\Support\Country::normalize($from))
+        ->filter(fn($f) => $to === '_' || \App\Support\Country::normalize($f->to_country) === \App\Support\Country::normalize($to))
         ->sortBy('flight_date');
 
     $nextFlight = $flights->first(fn($f) => $f->remaining_kg > 0);
@@ -17,7 +15,7 @@
     <div class="ag-h"><div class="av">{{ $initials }}</div><div class="ag-t"><h3>{{ $agency->name }}</h3><p>📍 {{ $agency->address }}</p></div></div>
     <div class="tags">
         @foreach($agency->routes as $route)
-            <span class="tag">{{ $countries[$route->from_country] }} → {{ $countries[$route->to_country] }}</span>
+            <span class="tag">{{ \App\Support\Country::label($route->from_country) }} → {{ \App\Support\Country::label($route->to_country) }}</span>
         @endforeach
     </div>
     @if($nextFlight)
@@ -29,7 +27,7 @@
                     <span>{{ $nextFlight->flight_date->locale('fr')->isoFormat('MMM') }}</span>
                 </div>
                 <div class="nx-i">
-                    <p class="rt">{{ $cities[$nextFlight->from_country] }} → {{ $cities[$nextFlight->to_country] }}</p>
+                    <p class="rt">{{ \App\Support\Country::city($nextFlight->from_country) }} → {{ \App\Support\Country::city($nextFlight->to_country) }}</p>
                     <p class="kgl"><strong>{{ $nextFlight->remaining_kg }}</strong> kg restants · {{ $nextFlight->price_per_kg }} {{ $nextFlight->currency }}/kg</p>
                     <div class="bar"><i style="width:{{ round($nextFlight->remaining_kg / $nextFlight->total_kg * 100) }}%"></i></div>
                 </div>

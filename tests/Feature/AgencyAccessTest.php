@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Agency;
+use App\Models\AgencyRoute;
 use App\Models\Flight;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,7 +56,16 @@ class AgencyAccessTest extends TestCase
         $this->assertFalse($publicAgencies->contains($pendingAgency));
     }
 
-    public function test_agency_can_update_routes_from_the_route_checkboxes(): void
+    public function test_unverified_agency_users_are_redirected_from_their_dashboard(): void
+    {
+        $agencyUser = User::factory()->unverified()->create(['role' => 'admin_agence']);
+
+        $this->actingAs($agencyUser)
+            ->get(route('agency.dashboard'))
+            ->assertRedirect(route('verification.notice'));
+    }
+
+    public function test_agency_can_update_routes_from_encoded_route_data(): void
     {
         $agencyUser = User::factory()->create(['role' => 'admin_agence']);
         $agency = Agency::factory()->for($agencyUser, 'user')->create();
@@ -74,6 +84,65 @@ class AgencyAccessTest extends TestCase
         ]);
     }
 
+    public function test_agency_can_save_routes_for_countries_not_in_the_original_list(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+        $agency = Agency::factory()->for($agencyUser, 'user')->create();
+
+        $response = $this->actingAs($agencyUser)->post(route('agency.routes.update'), [
+            'routes' => [
+                ['from' => 'Chine', 'to' => "Côte d'Ivoire"],
+            ],
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('agency_routes', [
+            'agency_id' => $agency->id,
+            'from_country' => 'CN',
+            'to_country' => 'CI',
+        ]);
+    }
+
+    public function test_public_agency_search_accepts_international_country_names(): void
+    {
+        $agency = Agency::factory()->create(['name' => 'International Parcel Agency']);
+        AgencyRoute::factory()->for($agency)->create([
+            'from_country' => 'CN',
+            'to_country' => 'SN',
+        ]);
+
+        $this->get(route('agences', ['from' => 'Chine', 'to' => 'Sénégal']))
+            ->assertOk()
+            ->assertSee('International Parcel Agency')
+            ->assertSee('Chine → Sénégal');
+    }
+
+    public function test_agency_can_create_a_flight_for_countries_not_in_the_original_list(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+        $agency = Agency::factory()->for($agencyUser, 'user')->create();
+
+        $this->actingAs($agencyUser)
+            ->post(route('agency.flights.store'), [
+                'from_country' => 'Chine',
+                'to_country' => 'Sénégal',
+                'flight_date' => now()->addWeek()->toDateString(),
+                'airline' => 'International Air',
+                'total_kg' => 100,
+                'remaining_kg' => 90,
+                'price_per_kg' => 4.5,
+                'currency' => 'USD',
+            ])
+            ->assertRedirect(route('agency.flights'));
+
+        $this->assertDatabaseHas('flights', [
+            'agency_id' => $agency->id,
+            'from_country' => 'CN',
+            'to_country' => 'SN',
+            'currency' => 'USD',
+        ]);
+    }
+
     public function test_agency_flight_form_renders_all_fields_with_its_styling_hooks(): void
     {
         $agencyUser = User::factory()->create(['role' => 'admin_agence']);
@@ -82,9 +151,38 @@ class AgencyAccessTest extends TestCase
         $this->actingAs($agencyUser)
             ->get(route('agency.flights.create'))
             ->assertOk()
+            ->assertSee('class="table-container flight-form-card"', false)
             ->assertSee('class="auth-form flight-form"', false)
             ->assertSee('Pays de départ')
             ->assertSee('Prix par kg')
-            ->assertSee('Kilos restants');
+            ->assertSee('Kilos restants')
+            ->assertSee('Créer le vol')
+            ->assertSee('class="flight-form-hint"', false);
+    }
+
+    public function test_agency_profile_and_routes_pages_render_their_styled_forms(): void
+    {
+        $agencyUser = User::factory()->create(['role' => 'admin_agence']);
+        $agency = Agency::factory()->for($agencyUser, 'user')->create();
+        $agency->routes()->create([
+            'from_country' => 'SN',
+            'to_country' => 'FR',
+        ]);
+
+        $this->actingAs($agencyUser)
+            ->get(route('agency.profile'))
+            ->assertOk()
+            ->assertSee('class="agency-settings-card"', false)
+            ->assertSee('class="agency-settings-form"', false)
+            ->assertSee('Modifier mon profil')
+            ->assertSee(asset('css/dashboard.css'));
+
+        $this->get(route('agency.routes'))
+            ->assertOk()
+            ->assertSee('class="agency-settings-card agency-routes-card"', false)
+            ->assertSee('class="route-editor__row"', false)
+            ->assertSee('name="routes[0][from]"', false)
+            ->assertSee('name="routes[0][to]"', false)
+            ->assertSee('Enregistrer les trajets');
     }
 }
